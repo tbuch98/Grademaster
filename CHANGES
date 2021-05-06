@@ -1,0 +1,87 @@
+3/24/2021
+Replaced user defined median function with statistics.median()
+Changed all instances of xrange() to range()
+
+3/25/2021
+logfile = open(opts.logfile,'w+') #replaced 'a',0 with "w+"
+error_file = open(opts.error_file,'w+')
+
+Reading in grade_dummy_file.csv as rawdata_df
+Dropped all NaN in the rawdata_df
+Added print statements across code to see changes in the rawdata
+
+Trimmed off the first 4 columns of hwkeys_list and examkeys_list
+so that the length of these lists is reflective of the actual
+number of HWs or midterms in the data frame
+
+hwkeys_list = hwkeys_list[4:]
+n_hwkeys = len(hwkeys_list)
+
+4/3/2021
+rewrote the lines that checked if the keys "Last name","First name" etc.
+were contained in the data frame. Implemented a for loop and a single
+if statement to replace 5 if/elif statements
+
+Reformatted the summary of acquired data.
+
+Opened messagefile successfully with  exception handling
+
+4/5/2021
+Put the min and max midterm scores in the 'Final' column of min_midtermdata_df and max_midtermdata_df
+by using pandas.DataFrame.min and pandas.DataFrame.max
+
+min_midtermdata_df['Final'] = min_midtermdata_df[['M1','M2']].min(axis = 1)
+
+Rewrote the projections_df code block
+Now we can get a grade projection for any point in the semester
+
+Remove the for loop causing the grade projection for every point (i.e., after hw1, hw2, etc.)
+and just give the lastest projectiong (key = key_list[-1])
+
+The messagefile now gives the latest grade projection at any point in the semester
+to the entire list of students
+
+4/11/2021
+Fixed errorfile and logfile that were not being written to.
+    #Right after main() is declared
+    logfile = open("logfile.txt",'w+')
+    error_file = open("errorfile.txt",'w+')
+    
+4/18/2021
+Replaced percent2lettergrade with percent_to_lettergrade
+which implements a grade_scale (nested dictionary) which the new function calls
+so that the letter grade cutoffs can be adjusted outside of the
+function. Also, the new function is simpler and uses 1 if statement
+inside of 1 for loop to iterate through the grade_scale
+
+Added the total code execution time to the logfile with time.time()
+at the start and end of the code. The total time is the ending time
+minus the starting time.
+
+Dropped the "Student ID" column from the class statistics since it has no statistical meaning
+tmp_str = str(rawdata_df.loc[:, rawdata_df.columns != 'Student ID'].describe())
+
+I created a class average histogram that shows the number of students in each final average bin (there are 20 bins).
+This is done with plt.hist().
+The average class average is also given as a vertical line and is indicated in the legend.
+The histogram is saved as a .png
+
+4/20/2021
+Instead of using projection_df['Final'] to get the last column of
+the projection_df data frame (which contains the grade averages at the end of the code),
+I implemented projection_df.iloc[:,-1] and now the code (and the grade histogram plot) works
+for the grade_dummy_file5_v2 which only has data up to HW9 (there is not 'Final' column)
+
+4/25
+I added the functionality of sending emails to each student of the messagefile which has their current
+letter grade projection and all of the class statistics for each assignment so far.
+This is implemented in Mailtrap, however only the first 5 students will get the email due to
+me using the free version of Mailtrap.
+
+5/1/2021
+pd.set_option('display.max_columns', None)
+Updated logfile writes
+
+5/5/2021
+Created the rankfile that lists the top and bottom student
+Exception handling implemented for opening files
